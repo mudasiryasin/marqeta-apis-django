@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Marqeta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Marqeta</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'administrator:listUsers' %}">Users</a></li>
+        <li><a href="{% url 'administrator:listCardProducts' %}">Card Products</a></li>
+        <li class="active"><a href="{% url 'administrator:listCards' %}">Cards</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <h2>Create Card</h2>
+  <br>
+  <p>Fill the form below to create a Marqeta card.</p>
+  <br>
+  <form method="POST">
+    {% csrf_token%}
+  <div class="form-group row">
+     <div class="col-xs-3">
+       <label for="firstName">Token</label>
+       <input id="firstName" type="text" class="form-control" name="firstName" placeholder="First Name" required>
+       <span class="help-block">Enter country code</span>
+     </div>
+     <div class="col-xs-3">
+       <label for="lastName">Name</label>
+       <input id="lastName" type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+       <span class="help-block">Enter city code</span>
+     </div>
+     <div class="col-xs-3">
+      <label for="gender">Status</label>
+      <select class="form-control" id="gender" name="gender" placeholder="">
+        <option value="" selected disabled>Please Select</option>
+        <option value="M">Active</option>
+        <option value="F">Inactive</option>
+        </select>
+      <span class="help-block">Enter city code</span>
+    </div>
+   </div>
+   <div class="form-group row">
+    <div class="col-xs-3">
+      <label for="dateOfBirth">Start Date</label>
+      <input id="dateOfBirth" type="date" class="form-control" name="dateOfBirth" placeholder="dateOfBirth" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+    <div class="col-xs-3">
+      <label for="dateOfBirth">End Date</label>
+      <input id="dateOfBirth" type="date" class="form-control" name="dateOfBirth" placeholder="dateOfBirth" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button><br><br>
+  <a class="btn btn-danger" href="/listCards">Back</a>
+</form>
+</div>
+</body>
+</html>

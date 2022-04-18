@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Marqeta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    img {
+      max-width: 100%;
+      height: auto;
+      padding-top:50px;
+    }
+    </style>
+</head>
+<body>
+<div class="container text-center">
+  {% load static %} <img src="{% static 'images/Marqeta_logo.png' %}" alt="Amadeus" width="320" height="47" />
+  <br><h2>Admin Panel</h2>
+  <hr><br>
+  <div class="form-group row">
+     <div class="col-xs-4 col-xs-offset-4">
+        <a class="btn btn-primary btn-lg btn-block" href="{% url 'administrator:listUsers' %}">Users</a><br>
+        <a class="btn btn-primary btn-lg btn-block" href="{% url 'administrator:listCards' %}">Cards</a><br>
+        <a class="btn btn-primary btn-lg btn-block" href="{% url 'administrator:listCardProducts' %}">Card Products</a><br><br>
+        <a class="btn btn-danger" href="/">Back</a>
+     </div>
+  </div>
+</div>
+</body>
+</html>

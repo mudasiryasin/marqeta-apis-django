@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Marqeta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Marqeta</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'administrator:listUsers' %}">Users</a></li>
+        <li><a href="{% url 'administrator:listCardProducts' %}">Card Products</a></li>
+        <li class="active"><a href="{% url 'administrator:listCards' %}">Cards</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <h2>All Cards</h2>
+  <br>
+  <a class="btn btn-primary" href="{% url 'administrator:createCard' %}">Create Card</a>
+  <br><br>
+  {% if isSuccess %}
+  <br>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Card Product Token</th>
+        <th>Card Token</th>
+        <th>Last Four Digits</th>
+        <th>Expiry Date and Time</th>
+        <th>State</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for card in cards %}
+      <tr>
+        <td class="col-md-3">{{ card.card_product_token }}</td>
+        <td class="col-md-3">{{ card.token }}</td>
+        <td class="col-md-2">{{ card.last_four }}</td>
+        <td class="col-md-2">{{ card.expiration_time }}</td>
+        <td class="col-md-2">{{ card.state }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No cards found.</p>
+  {% endif %}
+  <br>
+  <a class="btn btn-danger" href="/administrator/">Back</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Marqeta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Marqeta</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'administrator:listUsers' %}">Users</a></li>
+        <li><a href="{% url 'administrator:listCardProducts' %}">Card Products</a></li>
+        <li><a href="{% url 'administrator:listCards' %}">Cards</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <h2>All Users</h2>
+  <br>
+  <a class="btn btn-primary" href="{% url 'administrator:createUser' %}">Create User</a>
+  <br><br>
+  {% if isSuccess %}
+  <br>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>User Token</th>
+        <th>Full Name</th>
+        <th>Creation Date and Time</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td class="col-md-4">{{ user.token }}</td>
+        <td class="col-md-3">{{ user.first_name }} {{ user.last_name }}</td>
+        <td class="col-md-3">{{ user.created_time }}</td>
+        <td class="col-md-2">{{ user.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No users found.</p>
+  {% endif %}
+  <br>
+  <a class="btn btn-danger" href="/administrator/">Back</a>
+</div>
+</body>
+</html>

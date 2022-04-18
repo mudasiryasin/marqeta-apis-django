@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Marqeta</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Marqeta</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'administrator:listUsers' %}">Users</a></li>
+        <li><a href="{% url 'administrator:listCardProducts' %}">Card Products</a></li>
+        <li><a href="{% url 'administrator:listCards' %}">Cards</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+  <h2>Create User</h2>
+  <br>
+  <p>Fill the form below to create a Marqeta user.</p>
+  <br>
+  <form method="POST">
+    {% csrf_token%}
+  <div class="form-group row">
+     <div class="col-xs-3">
+       <label for="firstName">First Name</label>
+       <input id="firstName" type="text" class="form-control" name="firstName" placeholder="First Name" required>
+       <span class="help-block">Enter country code</span>
+     </div>
+     <div class="col-xs-3">
+       <label for="lastName">Last Name</label>
+       <input id="lastName" type="text" class="form-control" name="lastName" placeholder="Last Name" required>
+       <span class="help-block">Enter city code</span>
+     </div>
+     <div class="col-xs-3">
+      <label for="gender">Gender</label>
+      <select class="form-control" id="gender" name="gender">
+        <option value="" selected disabled>Please Select</option>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </select>
+      <span class="help-block">Enter city code</span>
+    </div>
+    <div class="col-xs-3">
+      <label for="dateOfBirth">Date of Birth</label>
+      <input id="dateOfBirth" type="date" class="form-control" name="dateOfBirth" placeholder="dateOfBirth" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+   </div>
+   <div class="form-group row">
+    <div class="col-xs-4">
+      <label for="address">Address</label>
+      <input id="address" type="text" class="form-control" name="address" placeholder="Address" required>
+      <span class="help-block">Enter country code</span>
+    </div>
+    <div class="col-xs-3">
+      <label for="city">City</label>
+      <input id="city" type="text" class="form-control" name="city" placeholder="City" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+    <div class="col-xs-3">
+     <label for="state">State</label>
+     <input id="state" type="text" class="form-control" name="state" placeholder="State" required>
+     <span class="help-block">Enter city code</span>
+   </div>
+   <div class="col-xs-2">
+     <label for="postalCode">Postal Code</label>
+     <input id="postalCode" type="text" class="form-control" name="postalCode" placeholder="Postal Code" required>
+     <span class="help-block">Enter city code</span>
+   </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-xs-3">
+      <label for="country">Country</label>
+      <input id="country" type="text" class="form-control" name="country" placeholder="Country" required>
+      <span class="help-block">Enter country code</span>
+    </div>
+    <div class="col-xs-3">
+      <label for="phone">Phone</label>
+      <input id="phone" type="text" class="form-control" name="phone" placeholder="Phone" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+    <div class="col-xs-3">
+      <label for="email">Email</label>
+      <input id="email" type="email" class="form-control" name="email" placeholder="Email" required>
+      <span class="help-block">Enter city code</span>
+    </div>
+   <div class="col-xs-3">
+     <label for="password">Password</label>
+     <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+     <span class="help-block">Enter city code</span>
+   </div>
+  </div>
+   <button type="submit" class="btn btn-primary">Create</button><br><br>
+   <a class="btn btn-danger" href="/listUsers">Back</a>
+  </form>
+</div>
+</body>
+</html>
