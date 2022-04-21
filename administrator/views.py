@@ -1,238 +1,205 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from marqeta import Client
+import requests
+import base64
+import json
 
-base_url = "https://sandbox-api.marqeta.com/v3/"
-application_token = "e5f1fdd8-de74-4d38-a66b-e094626d9014"
-access_token = "bdcfe703-b344-4f23-87c0-cc34284b9330"
-timeout = 60 # seconds
 
-client = Client(base_url, application_token, access_token, timeout)
+tokens = 'e5f1fdd8-de74-4d38-a66b-e094626d9014:bdcfe703-b344-4f23-87c0-cc34284b9330'
+encoded = base64.b64encode(tokens.encode('ascii'))
+headers = {
+     'Content-Type': 'application/json',
+     'Authorization': 'Basic ' + encoded.decode('utf-8')
+}
 
-def index(request):
-    return render(request, 'index.html')
-    
+
 def dashboard(request):
     return render(request, 'dashboard.html')
 
-def shop(request):
-    if request.method == 'POST':
-        rate = request.POST.get("rate")
-        quantity = request.POST.get("quantity")
-        totalAmount = rate * quantity
-        return render(request,'shop.html')
-
-    cards = getCards()
+def listUsers(request):
+    url = "https://sandbox-api.marqeta.com/v3/users"
+    response = requests.get(url, headers=headers)
     
-    return render(request, 'shop.html', {"cards": cards})
+    isSuccess = False
+    message = ''
+    data = ''
+    if response.status_code == 200:
+        data = json.loads(response.text)['data']
+        isSuccess = True
+    elif response.status_code == 400:
+        message = 'Bad request!'
+    else:
+        message = 'Server error!'
+    
+    return render(request,'listUsers.html', {'users': data, 'isSuccess': isSuccess, 'message': message})
 
 def createUser(request):
     if request.method == 'POST':
-        firstName = request.POST.get("firstName")
-        lastName = request.POST.get("lastName")
-        gender = request.POST.get("gender")
-        email = request.POST.get("email")
-        address = request.POST.get("address")
-        city = request.POST.get("city")
-        state = request.POST.get("state")
-        postalCode = request.POST.get("postalCode")
-        country = request.POST.get("country")
-        phone = request.POST.get("phone")
-        dateOfBirth = request.POST.get("dateOfBirth")
-        password = request.POST.get("password")
-        #parentToken  = request.POST.get("lastName")
-        #company = request.POST.get("lastName")
-        #identifications = request.POST.get("lastName")
+        url = "https://sandbox-api.marqeta.com/v3/users"
 
-        data = {
-            'first_name': firstName,
-            'last_name': lastName,
-            'gender': gender,
-            'email': email,
-            'address1': address,
-            'city': city,
-            'state': state,
-            'postal_code': postalCode,
-            'country': country,
-            'phone': phone,
-            'birth_date': dateOfBirth,
-            'password': password,
-        }
+        data = json.dumps({
+            "first_name": request.POST.get("firstName"),
+            "last_name": request.POST.get("lastName"),
+            "gender": request.POST.get("gender"),
+            "email": request.POST.get("email"),
+            "address": request.POST.get("address"),
+            "city": request.POST.get("city"),
+            "state": request.POST.get("state"),
+            "postal_code": request.POST.get("postalCode"),
+            "country": request.POST.get("country"),
+            "phone": request.POST.get("phone"),
+            "birth_date": request.POST.get("dateOfBirth")
+        })
 
-        user = client.users.create(data)
+        response = requests.post(url, headers=headers, data=data)
 
-        return render(request,'createUser.html')
+        isSuccess = False
+        message = ''
 
-    #countryCodes = codes.getCountryCodes
-    
-    #return render(request, 'createUser.html', {"countryCodes": countryCodes})
+        if response.status_code == 201:
+            isSuccess = True
+            message = 'User created successfully!'
+        elif response.status_code == 400:
+            message = 'User input error / Bad request!'
+        elif response.status_code == 409:
+            message = 'Request already processed with a different payload!'
+        elif response.status_code == 412:
+            message = 'Pre-condition setup issue!'
+        else:
+            message = 'Server error!'
+
+        return render(request,'createUser.html', {'isSuccess': isSuccess, 'message': message})
+
     return render(request, 'createUser.html')
 
-
-def listUsers(request):
-    users = client.users.stream()
-
-    context = {
-        'isSuccess' : True,
-        'users' : users
-    }
-
-    return render(request,'listUsers.html', context)
-
 def listCards(request):
-    token  = 'b7271c0b-f5b5-40b2-968b-f924cf5f8b33'
-
-    cards = client.cards.list_for_user(token)
-
-    context = {
-        'isSuccess' : True,
-        'cards' : cards
-    }
-
-    return render(request,'listCards.html', context)
-
-
-def listCardProducts(request):
-    cardProducts = client.card_products.list()
-
-    context = {
-        'isSuccess' : True,
-        'cardProducts' : cardProducts
-    }
-
-    return render(request,'listCardProducts.html', context)
-
-
+    user_id = 'b7271c0b-f5b5-40b2-968b-f924cf5f8b33'
+    url = "https://sandbox-api.marqeta.com/v3/cards/user/" + user_id
     
+    response = requests.get(url, headers=headers)
+    
+    isSuccess = False
+    message = ''
+    data = ''
+    if response.status_code == 200:
+        data = json.loads(response.text)['data']
+        isSuccess = True
+    elif response.status_code == 400:
+        message = 'User input error / Bad request!'
+    else:
+        message = 'Server error!'
 
-
-
-
-
-def createCardProduct(request):
-    if request.method == 'POST':
-        name = request.POST.get("name")
-        startDate = request.POST.get("startDate")
-
-        data = {
-            'name': name,
-            'start_date': startDate
-        }
-
-        cardProduct = client.card_products.create(data)
-
-        return render(request,'createCardProduct.html')
-
-    return render(request, 'createCardProduct.html')
-
+    return render(request,'listCards.html', {'cards': data, 'isSuccess': isSuccess, 'message': message})
 
 def createCard(request):
     if request.method == 'POST':
-        #name = request.POST.get("name")
-        #startDate = request.POST.get("startDate")
+        url =   "https://sandbox-api.marqeta.com/v3/cards?show_cvv_number="+ str(request.POST.get("showCVV")) + "&&show_pan="+ str(request.POST.get("showPAN"))
 
-        name_line_1 = {
-            'value': 'Mudasir Yasin'
-        }
+        data = json.dumps({
+            "user_token": request.POST.get("userToken"),
+            "card_product_token": request.POST.get("cardProductToken"),
+            "token": request.POST.get("cardToken"),
+            "fulfillment": {
+                "card_personalization": {
+                    "text": {
+                        "name_line_1": {
+                            "value": request.POST.get("name")
+                        }
+                    }
+                },
+                "shipping": {
+                    "recipient_address": {
+                        "address1": request.POST.get("address"),
+                        "city": request.POST.get("city"),
+                        "state": request.POST.get("state"),
+                        "postal_code": request.POST.get("postalCode")
+                    }
+                }
+            }
+        })
 
-        text = {
-            'name_line_1': name_line_1
-        }
+        response = requests.post(url, headers=headers, data=data)
 
-        card_personalization = {
-            'text': text
-        }
+        isSuccess = False
+        message = ''
+        if response.status_code == 201:
+            isSuccess = True
+            message = 'Card created successfully!'
+        elif response.status_code == 400:
+            message = 'User input error / Bad request!'
+        elif response.status_code == 409:
+            message = 'Token already associated with a different payload!'
+        else:
+            message = 'Server error!'
 
-        recipient_address = {
-            'address1': 'None',
-            'city': 'New York',
-            'state': 'New York',
-            'postal_code': '54000'
-        }
-
-        shipping = {
-            'recipient_address': recipient_address
-        }
-
-        fulfillment = {
-            'card_personalization': card_personalization,
-            'shipping': shipping
-        }
-
-        data = {
-            'user_token': 'b7271c0b-f5b5-40b2-968b-f924cf5f8b33',
-            'card_product_token': 'fa74b8fd-c854-4b35-a5bd-5989196e11e3',
-            'fulfillment': fulfillment
-        }
-
-        card = client.cards.create(data)
-
-        return render(request,'createCard.html')
+        return render(request,'createCard.html', {'isSuccess': isSuccess, 'message': message})
 
     return render(request, 'createCard.html')
 
-
-
-def createUser(request):
-    if request.method == 'POST':
-        firstName = request.POST.get("firstName")
-        lastName = request.POST.get("lastName")
-        gender = request.POST.get("gender")
-        email = request.POST.get("email")
-        address = request.POST.get("address")
-        city = request.POST.get("city")
-        state = request.POST.get("state")
-        postalCode = request.POST.get("postalCode")
-        country = request.POST.get("country")
-        phone = request.POST.get("phone")
-        dateOfBirth = request.POST.get("dateOfBirth")
-        password = request.POST.get("password")
-        #parentToken  = request.POST.get("lastName")
-        #company = request.POST.get("lastName")
-        #identifications = request.POST.get("lastName")
-
-        data = {
-            'first_name': firstName,
-            'last_name': lastName,
-            'gender': gender,
-            'email': email,
-            'address1': address,
-            'city': city,
-            'state': state,
-            'postal_code': postalCode,
-            'country': country,
-            'phone': phone,
-            'birth_date': dateOfBirth,
-            'password': password,
-        }
-
-        print(data)
-        createdUser = client.users.create(data)
-
-        return render(request,'createUser.html')
-
-    #countryCodes = codes.getCountryCodes
+def listCardProducts(request):
+    url = "https://sandbox-api.marqeta.com/v3/cardproducts"
     
-    #return render(request, 'createUser.html', {"countryCodes": countryCodes})
-    return render(request, 'createUser.html', {'firstName': 'Mudasir'})
+    response = requests.get(url, headers=headers)
+    
+    isSuccess = False
+    message = ''
+    data = ''
+    if response.status_code == 200:
+        data = json.loads(response.text)['data']
+        isSuccess = True
+    elif response.status_code == 400:
+        message = 'Bad request!'
+    else:
+        message = 'Server error!'
+    
+    return render(request,'listCardProducts.html', {'cardProducts': data, 'isSuccess': isSuccess, 'message': message})
 
+def createCardProduct(request):
+    if request.method == 'POST':
+        url = "https://sandbox-api.marqeta.com/v3/cardproducts"
 
+        data = json.dumps({
+            "name": request.POST.get("name"),
+            "start_date": request.POST.get("startDate")
+        })
 
-def getCards():
-    cards = {}
-    cards['1'] = '1'
-    cards['2'] = '2'
-    cards['3'] = '3'
+        response = requests.post(url, headers=headers, data=data)
 
-    base_url = "https://sandbox-api.marqeta.com/v3/"
-    application_token = "e5f1fdd8-de74-4d38-a66b-e094626d9014"
-    access_token = "bdcfe703-b344-4f23-87c0-cc34284b9330"
-    timeout = 60 # seconds
+        isSuccess = False
+        message = ''
+        if response.status_code == 201:
+            isSuccess = True
+            message = 'Card product created successfully!'
+        elif response.status_code == 400:
+            message = 'Bad request!'
+        elif response.status_code == 409:
+            message = 'Token already associated with a different payload!'
+        else:
+            message = 'Server error!'
 
-    client = Client(base_url, application_token, access_token, timeout)
+        return render(request,'createCardProduct.html', {'isSuccess': isSuccess, 'message': message})
 
-    token  = 'b7271c0b-f5b5-40b2-968b-f924cf5f8b33'
+    return render(request, 'createCardProduct.html')
 
-    cards = client.cards.list_for_user(token)
+def getUserTokens():
+    url = "https://sandbox-api.marqeta.com/v3/users"
+    
+    response = requests.get(url, headers=headers)
+    
+    userTokens = {}
+    if response.status_code == 200:
+        users = json.loads(response.text)['data']
+        for user in users:
+            userTokens[user['first_name'] + ' ' + user['last_name']] = user['token']
+    return userTokens
 
-    return cards
+def getCardProductTokens():
+    url = "https://sandbox-api.marqeta.com/v3/cardproducts"
+    
+    response = requests.get(url, headers=headers)
+    
+    cardProductTokens = {}
+    if response.status_code == 200:
+        cardProducts = json.loads(response.text)['data']
+        for cardProduct in cardProducts:
+            cardProductTokens[cardProduct['name']] = cardProduct['token']
+    return cardProductTokens

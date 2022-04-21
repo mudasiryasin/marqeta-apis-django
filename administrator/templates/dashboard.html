@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Marqeta</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <style>
-    img {
-      max-width: 100%;
-      height: auto;
-      padding-top:50px;
-    }
-    </style>
-</head>
-<body>
+{% extends 'administrator/base.html' %}
+{% load static %}
+
+{% block content %}
+
 <div class="container text-center">
-  {% load static %} <img src="{% static 'images/Marqeta_logo.png' %}" alt="Amadeus" width="320" height="47" />
+  <img src="{% static 'images/Marqeta_logo.png' %}" alt="Marqeta" style="max-width: 100%; height: auto; padding-top:50px;" width="320" height="47" />
+  
   <br><h2>Admin Panel</h2>
   <hr><br>
   <div class="form-group row">
@@ -29,5 +17,5 @@
      </div>
   </div>
 </div>
-</body>
-</html>
+
+{% endblock content %}
