@@ -13,7 +13,7 @@ headers = {
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'administrator/dashboard.html')
 
 def listUsers(request):
     url = "https://sandbox-api.marqeta.com/v3/users"
@@ -30,7 +30,7 @@ def listUsers(request):
     else:
         message = 'Server error!'
     
-    return render(request,'listUsers.html', {'users': data, 'isSuccess': isSuccess, 'message': message})
+    return render(request,'administrator/listUsers.html', {'users': data, 'isSuccess': isSuccess, 'message': message})
 
 def createUser(request):
     if request.method == 'POST':
@@ -67,9 +67,9 @@ def createUser(request):
         else:
             message = 'Server error!'
 
-        return render(request,'createUser.html', {'isSuccess': isSuccess, 'message': message})
+        return render(request,'administrator/createUser.html', {'isSuccess': isSuccess, 'message': message})
 
-    return render(request, 'createUser.html')
+    return render(request, 'administrator/createUser.html')
 
 def listCards(request):
     user_id = 'b7271c0b-f5b5-40b2-968b-f924cf5f8b33'
@@ -88,7 +88,7 @@ def listCards(request):
     else:
         message = 'Server error!'
 
-    return render(request,'listCards.html', {'cards': data, 'isSuccess': isSuccess, 'message': message})
+    return render(request,'administrator/listCards.html', {'cards': data, 'isSuccess': isSuccess, 'message': message})
 
 def createCard(request):
     if request.method == 'POST':
@@ -131,9 +131,9 @@ def createCard(request):
         else:
             message = 'Server error!'
 
-        return render(request,'createCard.html', {'isSuccess': isSuccess, 'message': message})
+        return render(request,'administrator/createCard.html', {'isSuccess': isSuccess, 'message': message})
 
-    return render(request, 'createCard.html')
+    return render(request, 'administrator/createCard.html')
 
 def listCardProducts(request):
     url = "https://sandbox-api.marqeta.com/v3/cardproducts"
@@ -151,7 +151,7 @@ def listCardProducts(request):
     else:
         message = 'Server error!'
     
-    return render(request,'listCardProducts.html', {'cardProducts': data, 'isSuccess': isSuccess, 'message': message})
+    return render(request,'administrator/listCardProducts.html', {'cardProducts': data, 'isSuccess': isSuccess, 'message': message})
 
 def createCardProduct(request):
     if request.method == 'POST':
@@ -176,9 +176,9 @@ def createCardProduct(request):
         else:
             message = 'Server error!'
 
-        return render(request,'createCardProduct.html', {'isSuccess': isSuccess, 'message': message})
+        return render(request,'administrator/createCardProduct.html', {'isSuccess': isSuccess, 'message': message})
 
-    return render(request, 'createCardProduct.html')
+    return render(request, 'administrator/createCardProduct.html')
 
 def getUserTokens():
     url = "https://sandbox-api.marqeta.com/v3/users"
