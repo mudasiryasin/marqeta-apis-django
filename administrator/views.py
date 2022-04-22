@@ -4,8 +4,7 @@ import base64
 import json
 
 
-#tokens = '<application-token>:<admin-access-token>'
-tokens = 'e5f1fdd8-de74-4d38-a66b-e094626d9014:bdcfe703-b344-4f23-87c0-cc34284b9330'
+tokens = '<application-token>:<admin-access-token>'
 encoded = base64.b64encode(tokens.encode('ascii'))
 headers = {
      'Content-Type': 'application/json',
@@ -74,8 +73,7 @@ def createUser(request):
     return render(request, 'administrator/createUser.html')
 
 def listCards(request):
-    #user_id = '<user-id>'
-    user_id = '8966da78-7326-4576-b445-60e8f1d56fcd'
+    user_id = '<user-id>'
     url = "https://sandbox-api.marqeta.com/v3/cards/user/" + user_id
     
     response = requests.get(url, headers=headers)

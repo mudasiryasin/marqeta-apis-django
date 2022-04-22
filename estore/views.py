@@ -7,8 +7,7 @@ import base64
 import json
 
 
-#tokens = '<application-token>:<admin-access-token>'
-tokens = 'e5f1fdd8-de74-4d38-a66b-e094626d9014:bdcfe703-b344-4f23-87c0-cc34284b9330'
+tokens = '<application-token>:<admin-access-token>'
 encoded = base64.b64encode(tokens.encode('ascii'))
 headers = {
      'Content-Type': 'application/json',
