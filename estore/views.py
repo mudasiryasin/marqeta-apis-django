@@ -7,7 +7,8 @@ import base64
 import json
 
 
-tokens = '<application-token>:<admin-access-token>'
+#tokens = '<application-token>:<admin-access-token>'
+tokens = 'e5f1fdd8-de74-4d38-a66b-e094626d9014:bdcfe703-b344-4f23-87c0-cc34284b9330'
 encoded = base64.b64encode(tokens.encode('ascii'))
 headers = {
      'Content-Type': 'application/json',
@@ -134,6 +135,7 @@ def transaction(pan, name, lastFour, expiration, amount):
 
     status, card_token = getCardToken(pan, name, lastFour, expiration)
 
+    print(status, card_token)
     if status:
         data = json.dumps({
             "amount": amount,
@@ -143,7 +145,7 @@ def transaction(pan, name, lastFour, expiration, amount):
 
         resp = requests.post(url, headers=headers, data=data)
 
-        if resp.status_code == 202:
+        if resp.status_code == 201:
             return True, resp.status_code
         return False, resp.status_code
     

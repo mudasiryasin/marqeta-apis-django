@@ -8,39 +8,50 @@
   <br>
   <p>Fill the form below to create a card product.</p>
   <br>
+  {% if isSuccess %}
+  <div class="alert alert-success alert-dismissible fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ message }}
+  </div>
+  {% elif isSuccess is not None %}
+  <div class="alert alert-danger alert-dismissible fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{ message }}
+  </div>
+  {% endif %}
   <form method="POST">
     {% csrf_token%}
   <div class="form-group row">
      <div class="col-xs-3">
-       <label for="firstName">Token</label>
-       <input id="firstName" type="text" class="form-control" name="firstName" placeholder="First Name" required>
-       <span class="help-block">Enter country code</span>
+       <label for="cardProductToken">Card Product Token</label>
+       <input id="cardProductToken" type="text" class="form-control" name="cardProductToken" placeholder="Card Product Token" required>
+       <span class="help-block">Enter card product token</span>
      </div>
      <div class="col-xs-3">
-       <label for="lastName">Name</label>
-       <input id="lastName" type="text" class="form-control" name="lastName" placeholder="Last Name" required>
-       <span class="help-block">Enter city code</span>
+       <label for="name">Name</label>
+       <input id="name" type="text" class="form-control" name="name" placeholder="Name" required>
+       <span class="help-block">Enter name</span>
      </div>
      <div class="col-xs-3">
-      <label for="gender">Status</label>
-      <select class="form-control" id="gender" name="gender" placeholder="">
+      <label for="status">Status</label>
+      <select class="form-control" id="status" name="status" required>
         <option value="" selected disabled>Please Select</option>
-        <option value="M">Active</option>
-        <option value="F">Inactive</option>
+        <option value="True">Active</option>
+        <option value="False">Inactive</option>
         </select>
-      <span class="help-block">Enter city code</span>
+      <span class="help-block">Select status</span>
     </div>
    </div>
    <div class="form-group row">
     <div class="col-xs-3">
-      <label for="dateOfBirth">Start Date</label>
-      <input id="dateOfBirth" type="date" class="form-control" name="dateOfBirth" placeholder="dateOfBirth" required>
-      <span class="help-block">Enter city code</span>
+      <label for="startDate">Start Date</label>
+      <input id="startDate" type="date" class="form-control" name="startDate" required>
+      <span class="help-block">Enter start date of activation</span>
     </div>
     <div class="col-xs-3">
-      <label for="dateOfBirth">End Date</label>
-      <input id="dateOfBirth" type="date" class="form-control" name="dateOfBirth" placeholder="dateOfBirth" required>
-      <span class="help-block">Enter city code</span>
+      <label for="endDate">End Date</label>
+      <input id="endDate" type="date" class="form-control" name="endDate" required>
+      <span class="help-block">Enter end date of activation</span>
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Create</button><br><br>

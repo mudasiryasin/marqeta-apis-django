@@ -4,7 +4,8 @@ import base64
 import json
 
 
-tokens = '<application-token>:<admin-access-token>'
+#tokens = '<application-token>:<admin-access-token>'
+tokens = 'e5f1fdd8-de74-4d38-a66b-e094626d9014:bdcfe703-b344-4f23-87c0-cc34284b9330'
 encoded = base64.b64encode(tokens.encode('ascii'))
 headers = {
      'Content-Type': 'application/json',
@@ -37,11 +38,12 @@ def createUser(request):
         url = "https://sandbox-api.marqeta.com/v3/users"
 
         data = json.dumps({
+            "token": request.POST.get("user_token"),
             "first_name": request.POST.get("firstName"),
             "last_name": request.POST.get("lastName"),
             "gender": request.POST.get("gender"),
             "email": request.POST.get("email"),
-            "address": request.POST.get("address"),
+            "address1": request.POST.get("address"),
             "city": request.POST.get("city"),
             "state": request.POST.get("state"),
             "postal_code": request.POST.get("postalCode"),
@@ -72,7 +74,8 @@ def createUser(request):
     return render(request, 'administrator/createUser.html')
 
 def listCards(request):
-    user_id = '<user-id>'
+    #user_id = '<user-id>'
+    user_id = '8966da78-7326-4576-b445-60e8f1d56fcd'
     url = "https://sandbox-api.marqeta.com/v3/cards/user/" + user_id
     
     response = requests.get(url, headers=headers)
@@ -133,7 +136,7 @@ def createCard(request):
 
         return render(request,'administrator/createCard.html', {'isSuccess': isSuccess, 'message': message})
 
-    return render(request, 'administrator/createCard.html')
+    return render(request, 'administrator/createCard.html', {'userTokens': getUserTokens(), 'cardProductTokens': getCardProductTokens()})
 
 def listCardProducts(request):
     url = "https://sandbox-api.marqeta.com/v3/cardproducts"
@@ -158,8 +161,11 @@ def createCardProduct(request):
         url = "https://sandbox-api.marqeta.com/v3/cardproducts"
 
         data = json.dumps({
+            "token": request.POST.get("cardProductToken"),
             "name": request.POST.get("name"),
-            "start_date": request.POST.get("startDate")
+            "active": request.POST.get("status"),
+            "start_date": request.POST.get("startDate"),
+            "end_date": request.POST.get("endDate")
         })
 
         response = requests.post(url, headers=headers, data=data)
